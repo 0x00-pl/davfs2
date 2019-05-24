@@ -1862,7 +1862,6 @@ prop_result(void *userdata, const ne_uri *uri, const ne_prop_result_set *set)
         data = ne_propset_value(set, &anonymous_prop_names[TYPE]);
     if (data && strstr(data, "collection"))
             result->is_dir = 1;
-
     if (*(result->path + strlen(result->path) - 1) == '/') {
         if (!result->is_dir)
             *(result->path + strlen(result->path) - 1) = '\0';
@@ -1875,8 +1874,11 @@ prop_result(void *userdata, const ne_uri *uri, const ne_prop_result_set *set)
     }
 
     if (strcasestr(result->path, ctx->path) != result->path) {
-        dav_delete_props(result);
-        return;
+	char* target = strcasestr(result->path, ctx->path);
+            char *tmp = ne_malloc(strlen(target) + 1);
+		strcpy(tmp, target);
+            free(result->path);
+            result->path = tmp;
     }
 
     if (strcasecmp(result->path, ctx->path) == 0) {
