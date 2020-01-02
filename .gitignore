@@ -1,5 +1,7 @@
 *.swp
 *~
+.kdev4/
+davfs2.kdev4
 
 
 
